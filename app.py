@@ -38,21 +38,17 @@ class RecommenderSystem:
 recommender = RecommenderSystem()
 
 # Load the model and data pickle files
-data_path = "recommender_data.pkl"  # Path to dataset pickle file
-model_path = "recommender_model.pkl"  # Path to model pickle file
-title_path = "movie_title.pkl"  # Path to model pickle file
-
 @st.cache_data
 def load_data():
-    recommender.load_data(data_path)
+    recommender.load_data("recommender_data.pkl")
 
 @st.cache_resource
 def load_model():
-    recommender.load_model(model_path)
+    recommender.load_model("recommender_model.pkl")
 
 @st.cache_resource
 def load_title():
-    with open(title_path, 'rb') as f:
+    with open("movie_title.pkl", 'rb') as f:
         title = pickle.load(f)
     
 # Streamlit UI
