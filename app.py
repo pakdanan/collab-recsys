@@ -68,8 +68,10 @@ if st.button("Get Recommendations"):
     recommender.load_data("recommender_data.pkl")
     recommender.load_model("recommender_model.pkl")
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
-    #movie_title = pd.read_pickle("movie_title.pkl")
-    #recs=recs.merge(movie_title,on='movieId')
+    #with open("movie_title.pkl", 'rb') as f:
+    #    movie_title = pickle.load(f)
+    movie_title = pd.read_pickle("movie_title.pkl")
+    recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
         st.dataframe(recs)
