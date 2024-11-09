@@ -34,43 +34,24 @@ class RecommenderSystem:
         result.sort_values("pred_score", ascending=False, inplace=True)
         return result.head(topk)
 
-# Initialize RecommenderSystem
-recommender = RecommenderSystem()
-
-# Load the model and data pickle files
-#@st.cache_data
-#def load_data():
-#    recommender.load_data("recommender_data.pkl")
-
-#@st.cache_resource
-#def load_model():
-#    recommender.load_model("recommender_model.pkl")
-
-#@st.cache_resource
-#def load_title():
-#    movie_title = pd.read_pickle("movie_title.pkl")
-    
 # Streamlit UI
 st.title("Movie Recommender System")
 st.write("Enter a user ID to get personalized movie recommendations.")
 
-# Load the model and data only once
-#load_data()
-#load_model()
-#load_title()
-
 # User input for user ID and top-k recommendations
 user_id = st.number_input("User ID", min_value=1, step=1)
 topk = st.slider("Number of Recommendations", min_value=1, max_value=20, value=10)
+
+# Initialize RecommenderSystem
+recommender = RecommenderSystem()
 
 # Button to generate recommendations
 if st.button("Get Recommendations"):
     recommender.load_data("recommender_data.pkl")
     recommender.load_model("recommender_model.pkl")
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
-    #with open("movie_title.pkl", 'rb') as f:
-    #    movie_title = pickle.load(f)
-    movie_title = pd.read_pickle("movie_title.pkl")
+    with open("movie_title.pkl", 'rb') as f:
+        movie_title = pickle.load(f)
     recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
