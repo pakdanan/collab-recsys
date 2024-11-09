@@ -46,9 +46,9 @@ def load_data():
 def load_model():
     recommender.load_model("recommender_model.pkl")
 
-@st.cache_resource
-def load_title():
-    movie_title = pd.read_pickle("movie_title.pkl")
+#@st.cache_resource
+#def load_title():
+#    movie_title = pd.read_pickle("movie_title.pkl")
     
 # Streamlit UI
 st.title("Movie Recommender System")
@@ -57,7 +57,7 @@ st.write("Enter a user ID to get personalized movie recommendations.")
 # Load the model and data only once
 load_data()
 load_model()
-load_title()
+#load_title()
 
 # User input for user ID and top-k recommendations
 user_id = st.number_input("User ID", min_value=1, step=1)
@@ -66,6 +66,7 @@ topk = st.slider("Number of Recommendations", min_value=1, max_value=20, value=1
 # Button to generate recommendations
 if st.button("Get Recommendations"):
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
+    movie_title = pd.read_pickle("movie_title.pkl")
     recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
