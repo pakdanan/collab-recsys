@@ -29,9 +29,12 @@ class RecommenderSystem:
         rated = self.df[self.df.userId == user_id].movieId
         not_rated = [movieId for movieId in self.all_movies if movieId not in rated]
         score = [self.model.predict(user_id, movieId).est for movieId in not_rated]
-
         result = pd.DataFrame({"movieId": not_rated, "pred_score": score})
         result.sort_values("pred_score", ascending=False, inplace=True)
+        # merge with movie_title.pkl to get movie title:
+        with open("movie_title.pkl", 'rb') as f:
+            movie_title = pickle.load(f)
+        result=result.merge(movie_title,on='movieId')
         return result.head(topk)
 
 # Streamlit UI
@@ -50,9 +53,6 @@ if st.button("Get Recommendations"):
     recommender.load_data("recommender_data.pkl")
     recommender.load_model("recommender_model.pkl")
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
-    with open("movie_title.pkl", 'rb') as f:
-        movie_title = pickle.load(f)
-    recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
         st.dataframe(recs)
