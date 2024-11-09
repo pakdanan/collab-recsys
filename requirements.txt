@@ -1,3 +1,5 @@
-pandas==1.2.5
-scikit-surprise==1.1.1
-streamlit==0.83.0
+numpy==1.26.4
+pandas==2.2.2
+scikit-surprise==1.1.4
+streamlit
+Cython=3.0.11
