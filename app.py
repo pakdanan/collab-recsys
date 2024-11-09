@@ -66,8 +66,8 @@ topk = st.slider("Number of Recommendations", min_value=1, max_value=20, value=1
 # Button to generate recommendations
 if st.button("Get Recommendations"):
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
-    movie_title = pd.read_pickle("movie_title.pkl")
-    recs=recs.merge(movie_title,on='movieId')
+    #movie_title = pd.read_pickle("movie_title.pkl")
+    #recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
         st.dataframe(recs)
