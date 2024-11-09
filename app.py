@@ -11,7 +11,7 @@ class RecommenderSystem:
     def load_data(self, data_path):
         """Load the dataset from a pickle file."""
         self.df = pd.read_pickle(data_path)
-        self.all_movies = self.df.movie.unique()
+        self.all_movies = self.df.movieId.unique()
 
     def load_model(self, model_path):
         """Load a trained model from a file."""
@@ -45,7 +45,7 @@ def load_model():
 
 @st.cache_resource
 def load_title():
-    title = pd.read_pickle("movie_title.pkl")
+    movie_title = pd.read_pickle("movie_title.pkl")
     
 # Streamlit UI
 st.title("Movie Recommender System")
@@ -63,7 +63,7 @@ topk = st.slider("Number of Recommendations", min_value=1, max_value=20, value=1
 # Button to generate recommendations
 if st.button("Get Recommendations"):
     recs = recommender.recommend(user_id=int(user_id), topk=topk)
-    recs=recs.merge(movie,on='movieId')
+    recs=recs.merge(movie_title,on='movieId')
     if not recs.empty:
         st.write("Top Recommendations:")
         st.dataframe(recs)
