@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import pickle
 
 # Load RecommenderSystem class (Assuming it's in the same file or imported from another module)
 class RecommenderSystem:
@@ -10,12 +11,14 @@ class RecommenderSystem:
 
     def load_data(self, data_path):
         """Load the dataset from a pickle file."""
-        self.df = pd.read_pickle(data_path)
-        self.all_movies = self.df.movieId.unique()
+        with open(data_path, 'rb') as f:
+            self.df = pickle.load(f)
+            self.all_movies = self.df.movieId.unique()
 
     def load_model(self, model_path):
         """Load a trained model from a file."""
-        self.model = pd.read_pickle(model_path)
+        with open(model_path, 'rb') as f:
+            self.model = pickle.load(f)
 
     def recommend(self, user_id, topk=10):
         """Make recommendations for a given user."""
